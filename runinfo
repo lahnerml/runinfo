@@ -1,0 +1,111 @@
+#!/usr/bin/python
+
+"""
+Copyright (c) 2018 Michael Lahnert
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
+
+import datetime
+import sys
+
+
+def parse_input(params):
+    parse_avgs = False
+    parse_durs = False
+    ctr = 1
+    dist = 0
+    avgs = []
+    durs = []
+    while ctr < len(params):
+        if params[ctr] == "dist":
+            parse_avgs = False
+            parse_durs = False
+            if params[ctr + 1] == "hm":
+                dist = 21.0975
+            else:
+                dist = int(params[ctr + 1])
+            ctr += 2
+        if params[ctr] == "avg":
+            parse_avgs = True
+            parse_durs = False
+            ctr += 1
+        if params[ctr] == "dur":
+            parse_avgs = False
+            parse_durs = True
+            ctr += 1
+        if parse_avgs:
+            d = datetime.datetime.strptime(params[ctr], "%M:%S")
+            t = datetime.timedelta(minutes=d.minute, seconds=d.second)
+            avgs.append(t)
+            ctr += 1
+        if parse_durs:
+            try:
+                d = datetime.datetime.strptime(params[ctr], "%H:%M")
+            except ValueError:
+                d = datetime.datetime.strptime(params[ctr], "%M")
+            t = datetime.timedelta(hours=d.hour, minutes=d.minute)
+            durs.append(t)
+            ctr += 1
+    return dist, avgs, durs
+
+
+def calc_durations(dist, avgs):
+    durations = []
+    for avg in avgs:
+        durations.append(avg * dist)
+    return durations
+
+
+def calc_averages(dist, durs):
+    averages = []
+    for dur in durs:
+        averages.append(1 / dist * dur)
+    return averages
+
+
+def print_info(dist, avgs, durs):
+    print(dist, "km")
+    for d in range(len(durs)):
+        print(str(avgs[d]), str(durs[d]))
+
+
+class ri:
+    def __init__(self, **kwargs):
+        if "dist" in kwargs:
+            self.distances = kwargs["dist"]
+        else:
+            self.distances = [5, 10, 21.0975, 42.195]
+        if "avg" in kwargs:
+            self.averages = kwargs["avg"]
+            self.durations = calc_durations(self.distances, self.averages)
+        if "dur" in kwargs:
+            self.durations = kwargs["dur"]
+            self.averages = calc_averages(self.distances, self.durations)
+
+
+if __name__ == "__main__":
+    dist, avgs, durs = parse_input(sys.argv)
+    if len(avgs) == 0:
+        args = ({"dist": dist, "dur": durs})
+    elif len(durs) == 0:
+        args = ({"dist": dist, "avg": avgs})
+    r = ri(**args)
+    print_info(r.distances, r.averages, r.durations)
