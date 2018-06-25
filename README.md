@@ -5,8 +5,12 @@ time.
 
 To determine the average pace needed to finish within a specified time call the
 script as
+```
 runinfo dist $distance dur $duration
+```
 
 To determine the time it will take to race a distance with a given average pace
 call the script as
+```
 runinfo dist $distance avg $average
+```
