@@ -8,9 +8,13 @@ script as
 ```
 runinfo dist $distance dur $duration
 ```
+Note, that `$duration` has to be either formatted as `HH:MM` or `MM`.
 
 To determine the time it will take to race a distance with a given average pace
 call the script as
 ```
 runinfo dist $distance avg $average
 ```
+Note, that `$average` has to be either formatted as `MM:SS`.
+
+Dist has to be specified as number.
