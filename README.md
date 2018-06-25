@@ -1,5 +1,5 @@
-Simple script that linearly interpolates how long it will take to run a
-with a given average pace.
+Simple script that linearly interpolates how long it will take to run a given
+distance with a certain average pace.
 Additionally, it gives the average pace that is needed to finish in a given
 time.
 
