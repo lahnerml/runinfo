@@ -38,10 +38,14 @@ def parse_input(params):
         if params[ctr] == "dist":
             parse_avgs = False
             parse_durs = False
-            if params[ctr + 1] == "hm":
+            if params[ctr + 1].lower() == "hm" or \
+               params[ctr + 1].lower() == "halfmarathon":
                 dist = 21.0975
+            elif params[ctr + 1].lower() == "m" or \
+                 params[ctr + 1].lower() == "marathon":
+                dist = 42.195
             else:
-                dist = int(params[ctr + 1])
+                dist = float(params[ctr + 1])
             ctr += 2
         if params[ctr] == "avg":
             parse_avgs = True

@@ -17,4 +17,6 @@ runinfo dist $distance avg $average
 ```
 Note, that `$average` has to be either formatted as `MM:SS`.
 
-Dist has to be specified as number.
+In general, dist has to be specified as number.  Additionally, marathon and
+halfmarathon can be specified as `m` or `marathon` and `hm` or `halfmarathon`,
+respectively.
