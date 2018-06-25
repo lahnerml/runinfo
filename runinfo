@@ -95,8 +95,6 @@ class ri:
     def __init__(self, **kwargs):
         if "dist" in kwargs:
             self.distances = kwargs["dist"]
-        else:
-            self.distances = [5, 10, 21.0975, 42.195]
         if "avg" in kwargs:
             self.averages = kwargs["avg"]
             self.durations = calc_durations(self.distances, self.averages)
